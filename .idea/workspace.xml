@@ -4,17 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7369377c-1aa7-4d61-ad6d-28fc22fb29da" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/Application/Book.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/Application/HibernateConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/Application/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
+    <list default="true" id="7369377c-1aa7-4d61-ad6d-28fc22fb29da" name="Changes" comment="initial first commit">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/Application/Customers.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/Application/Sales.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Application/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/Application/Book.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Application/HibernateConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/Application/HibernateConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Application/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/Application/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +58,20 @@
       <option name="presentableId" value="Default" />
       <updated>1706173309292</updated>
     </task>
+    <task id="LOCAL-00001" summary="initial first commit">
+      <option name="closed" value="true" />
+      <created>1706207728657</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1706207728657</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="initial first commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="initial first commit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -68,6 +79,10 @@
         <breakpoint enabled="true" type="java-exception">
           <properties class="org.hibernate.service.spi.ServiceException" package="org.hibernate.service.spi" />
           <option name="timeStamp" value="1" />
+        </breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.IllegalArgumentException" package="java.lang" />
+          <option name="timeStamp" value="2" />
         </breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -1,14 +1,17 @@
 package com.Application;
 
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "books")
 public class Book {
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "book_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer bookID;
     @Column(name = "title")
     private String title;
@@ -18,9 +21,47 @@ public class Book {
     private String genre;
     @Column(name = "price")
     private BigDecimal price;
-    @Column(name = "quantityInStock")
+    @Column(name = "quantity_in_stock")
     private Integer quantityInStock;
+
     public Book() {
+    }
+
+    public void setBookID(Integer bookID) {
+
+        this.bookID = bookID;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setQuantityInStock(Integer quantityInStock) {
+        this.quantityInStock = quantityInStock;
+    }
+
+    public Integer getBookID() {
+        return bookID;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public Integer getQuantityInStock() {
+        return quantityInStock;
     }
 
     public Book(String title, String author, String genre, BigDecimal price, Integer quantityInStock) {
