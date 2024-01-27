@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "customers")
 
-public class Customers {
+public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "customer_id")
@@ -21,13 +21,13 @@ public class Customers {
     private String phone;
 
 
-    public Customers(String name, String email, String phone) {
+    public Customer(String name, String email, String phone) {
         this.name = name;
         this.email = email;
         this.phone = phone;
     }
 
-    public Customers() {
+    public Customer() {
     }
 
     public void setName(String name) {

@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "customers")
-public class Sales {
+public class Sale {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "sale_id")
@@ -18,7 +18,7 @@ public class Sales {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    private Customers customer;
+    private Customer customer;
 
     @Column(name = "date_of_sale")
     private LocalDateTime purchaseDate;
@@ -29,10 +29,10 @@ public class Sales {
     @Column(name = "total_price")
     private BigDecimal totalPrice;
 
-    public Sales() {
+    public Sale() {
     }
 
-    public Sales(Book book, Customers customer, LocalDateTime purchaseDate, int quantitySold, BigDecimal totalPrice) {
+    public Sale(Book book, Customer customer, LocalDateTime purchaseDate, int quantitySold, BigDecimal totalPrice) {
         this.book = book;
         this.customer = customer;
         this.purchaseDate = purchaseDate;
@@ -48,7 +48,7 @@ public class Sales {
         return book;
     }
 
-    public Customers getCustomer() {
+    public Customer getCustomer() {
         return customer;
     }
 
@@ -72,7 +72,7 @@ public class Sales {
         this.book = book;
     }
 
-    public void setCustomer(Customers customer) {
+    public void setCustomer(Customer customer) {
         this.customer = customer;
     }
 

@@ -17,10 +17,9 @@ public class Main {
             HibernateConfig.getSessionFactory();
 
     public static void main(String[] args) {
-        Book book = new Book("title", "Author", "genre 1", BigDecimal.ONE, 123);
         Session session = SESSION_FACTORY.openSession();
         Transaction transaction = session.beginTransaction();
-        while (true) {
+        menu: while (true) {
             Scanner input = new Scanner(System.in);
 
             System.out.println("Press 1 if you want to update book details. ");
@@ -37,6 +36,7 @@ public class Main {
                 case "1": {
                     System.out.println("please insert book_id");
                     Long book_id = input.nextLong();
+                    input.nextLine();
                     Book bookSelected =  getBookById(book_id);
                     if(bookSelected != null){
                     while (true){
@@ -46,22 +46,25 @@ public class Main {
                         System.out.println("Press 4 if you want to exit. ");
                         switch (input.nextLine()) {
                             case "1": {
+                                System.out.println("please input title");
                                 String title = input.nextLine();
                                 bookSelected.setTitle(title);
                                 break;
                             }
                             case "2": {
+                                System.out.println("please input genre");
                                 String genre = input.nextLine();
                                 bookSelected.setGenre(genre);
                                 break;
                             }
                             case "3": {
+                                System.out.println("please input price");
                                 BigDecimal price = input.nextBigDecimal();
                                 bookSelected.setPrice(price);
                                 break;
                             }
                             case "4": {
-                                break;
+                                continue menu;
                             }
 
                         }
@@ -73,7 +76,8 @@ public class Main {
                 }
                 case "2": {System.out.println("please insert customer_id");
                     Long customer_id = input.nextLong();
-                    Customers customerSelected =  getCustomerById(customer_id);
+                    input.nextLine();
+                    Customer customerSelected =  getCustomerById(customer_id);
                     if(customerSelected != null){
                         while (true){
                             System.out.println("Press 1 if you want to update Customer email. ");
@@ -81,17 +85,19 @@ public class Main {
                             System.out.println("Press 3 if you want to exit. ");
                             switch (input.nextLine()) {
                                 case "1": {
+                                    System.out.println("input your new email");
                                     String email = input.nextLine();
                                     customerSelected.setEmail(email);
                                     break;
                                 }
                                 case "2": {
+                                    System.out.println("input your new phone");
                                     String phone = input.nextLine();
                                     customerSelected.setPhone(phone);
                                     break;
                                 }
                                 case "3": {
-                                    break;
+                                    continue menu;
                                 }
 
                             }
@@ -134,7 +140,7 @@ public class Main {
                     Scanner scanner = new Scanner(System.in);
                     System.out.print("Enter author to list books: ");
                     Long customerId = Long.valueOf(scanner.nextLine());
-                    List<Sales> purchaseHistory = getPurchaseHistory(customerId);
+                    List<Sale> purchaseHistory = getPurchaseHistory(customerId);
                     System.out.println("Purchase History for Customer " + customerId + ":");
                     purchaseHistory.forEach(purchase -> System.out.println(purchase.getBook().getTitle()));
                     break;
@@ -155,15 +161,14 @@ public class Main {
                     break;
                 }
                 case "8": {
-                    List<Sales> booksSoldReport = getBooksSoldReport();
+                    List<Sale> booksSoldReport = getBooksSoldReport();
                     displayBooksSoldReport(booksSoldReport);
                     break;
                 }
                 case "0": {
-                    session.persist(book);
-                    session.flush();
                     transaction.commit();
                     session.close();
+                    HibernateConfig.shutdown();
                     return;
                 }
                 default:
@@ -197,12 +202,12 @@ public class Main {
             e.printStackTrace();
         }
     }
-    public static void customerManagementUpdate(Customers updatedCustomer){
+    public static void customerManagementUpdate(Customer updatedCustomer){
         try (Session session = SESSION_FACTORY.openSession()) {
             Transaction transaction = session.beginTransaction();
 
             // Retrieve the existing customer from the database
-            Customers existingCustomer = session.get(Customers.class, updatedCustomer.getId());
+            Customer existingCustomer = session.get(Customer.class, updatedCustomer.getId());
 
             // Update the customer details
             existingCustomer.setPhone(updatedCustomer.getPhone());
@@ -219,7 +224,7 @@ public class Main {
     }
     public static List<Book> getBooksByGenre(String genre) {
         try (Session session = SESSION_FACTORY.openSession()) {
-            String hql = "FROM books b WHERE b.genre = :genre";
+            String hql = "FROM Book b WHERE b.genre = :genre";
             Query<Book> query = session.createQuery(hql, Book.class);
             query.setParameter("genre", genre);
             return query.getResultList();
@@ -240,10 +245,10 @@ public class Main {
         }
     }
 
-    public static List<Sales> getPurchaseHistory(Long customerId) {
+    public static List<Sale> getPurchaseHistory(Long customerId) {
         try (Session session = SESSION_FACTORY.openSession()) {
-            String hql = "FROM Sales p WHERE p.customers.id = :customerId";
-            Query<Sales> query = session.createQuery(hql, Sales.class);
+            String hql = "FROM Sales p WHERE p.customer.id = :customerId";
+            Query<Sale> query = session.createQuery(hql, Sale.class);
             query.setParameter("customerId", customerId);
             return query.getResultList();
         } catch (Exception e) {
@@ -251,7 +256,7 @@ public class Main {
             return Collections.emptyList();
         }
     }
-    public static void processNewSale(Customers customer, Book book) {
+    public static void processNewSale(Customer customer, Book book) {
         try (Session session = SESSION_FACTORY.openSession()) {
             Transaction transaction = session.beginTransaction();
 
@@ -262,7 +267,7 @@ public class Main {
                 session.update(book);
 
                 // Record the sale
-                Sales purchase = new Sales();
+                Sale purchase = new Sale();
                 purchase.setCustomer(customer);
                 purchase.setBook(book);
                 purchase.setPurchaseDate(LocalDateTime.now());
@@ -278,7 +283,7 @@ public class Main {
     }
     public static Map<String, BigDecimal> calculateTotalRevenueByGenre() {
         try (Session session = SESSION_FACTORY.openSession()) {
-            String hql = "SELECT p.books.genre, SUM(p.price) FROM Sales p GROUP BY p.books.genre";
+            String hql = "SELECT p.book.genre, SUM(p.price) FROM Sales p GROUP BY p.book.genre";
             Query<Object[]> query = session.createQuery(hql, Object[].class);
             List<Object[]> result = query.getResultList();
 
@@ -308,10 +313,10 @@ public class Main {
         }
     }
 
-    public static List<Sales> getBooksSoldReport() {
+    public static List<Sale> getBooksSoldReport() {
         try (Session session = SESSION_FACTORY.openSession()) {
-            String hql = "SELECT p FROM Sales p JOIN FETCH p.customers JOIN FETCH p.books";
-            Query<Sales> query = session.createQuery(hql, Sales.class);
+            String hql = "SELECT p FROM Sales p JOIN FETCH p.customer JOIN FETCH p.book";
+            Query<Sale> query = session.createQuery(hql, Sale.class);
             return query.getResultList();
         } catch (HibernateException e) {
             // Log the exception or throw a custom exception
@@ -319,11 +324,11 @@ public class Main {
             return Collections.emptyList();
         }
     }
-    public static void displayBooksSoldReport(List<Sales> purchases) {
+    public static void displayBooksSoldReport(List<Sale> purchases) {
         System.out.println("Books Sold Report:");
-        for (Sales purchase : purchases) {
+        for (Sale purchase : purchases) {
             Book book = purchase.getBook();
-            Customers customer = purchase.getCustomer();
+            Customer customer = purchase.getCustomer();
 
             System.out.println("Book Title: " + (book != null ? book.getTitle() : "N/A"));
             System.out.println("Customer Name: " + (customer != null ? customer.getName() : "N/A"));
@@ -344,17 +349,17 @@ public class Main {
             return new Book();
         }
     }
-    public static Customers getCustomerById(Long id){
+    public static Customer getCustomerById(Long id){
 
         try (Session session = SESSION_FACTORY.openSession()) {
-            String hql = "FROM Customers p WHERE p.customer_id = :customer_id";
-            Query<Customers> query = session.createQuery(hql, Customers.class);
+            String hql = "FROM Customers p WHERE p.id = :customer_id";
+            Query<Customer> query = session.createQuery(hql, Customer.class);
             query.setParameter("customer_id", id);
 
             return query.getResultList().getFirst();
         } catch (Exception e) {
             e.printStackTrace();
-            return new Customers();
+            return new Customer();
         }
     }
 
